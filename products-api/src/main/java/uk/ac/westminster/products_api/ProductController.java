@@ -1,16 +1,46 @@
 package uk.ac.westminster.products_api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+//until tute 2
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//@RestController
+//@RequestMapping("/products")
+//public class ProductController {
+//
+//    @GetMapping("/{id}")
+//    public Product getById(@PathVariable Long id) {
+//        return new Product(id, "Laptop", 999.99);
+//    }
+//}
+
+//from tute 3
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/products")
 public class ProductController {
 
-    @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return new Product(id, "Laptop", 999.99);
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("/products")
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/products/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id).orElse(null);
+    }
+
+    @PostMapping("/products")
+    public Product addProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
     }
 }
